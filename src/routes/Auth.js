@@ -42,7 +42,7 @@ const Auth = () => {
     } catch (error) {
       var errorCode = error.code;
       var errorMessage = error.message;
-      if (errorCode == "auth/weak-password") {
+      if (errorCode === "auth/weak-password") {
         alert("The password is too weak.");
       } else {
         alert(errorMessage);
@@ -91,7 +91,7 @@ const Auth = () => {
         >
           Continue with Google
         </button>
-        <button disabled id="kakao" onClick>
+        <button disabled id="kakao">
           Continue with Kakao
         </button>
       </div>

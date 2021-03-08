@@ -2,11 +2,10 @@ import { authService, dbService } from "firebaseApp";
 import React, { useState, useEffect } from "react";
 import { useHistory } from "react-router-dom";
 
-const Home = () => {
+const Home = ({ userData }) => {
   const [hour, setHour] = useState("");
   const [minute, setMinute] = useState("");
   const [timeList, setTimeList] = useState([]);
-  const [isUpdated, setIsUpdated] = useState(false);
 
   const onChange = (e) => {
     const { value, id } = e.target;
@@ -17,23 +16,26 @@ const Home = () => {
 
   const onSubmit = async (e) => {
     e.preventDefault();
-    await dbService.collection("lolTime").add({ hour, minute });
+    await dbService.collection("lolTime").add({
+      userId: userData.uid,
+      userEmail: userData.email,
+      hour: hour,
+      minute: minute,
+    });
     setHour("");
     setMinute("");
-    setTimeList([]); //onSubmit 할 때마다 timeList 초기화
-    setIsUpdated((prev) => !prev);
-  };
-
-  const viewLolTime = async () => {
-    const dbLolTime = await dbService.collection("lolTime").get();
-    dbLolTime.forEach((document) => {
-      setTimeList((prev) => [document.data(), ...prev]);
-    });
   };
 
   useEffect(() => {
-    viewLolTime();
-  }, [isUpdated]); //submit 이 바뀔 때마다 업데이트한다
+    //foreach 구문과 다르게 onSnapshot 실시간 반영 가능
+    dbService.collection("lolTime").onSnapshot((snapshot) => {
+      const timeArray = snapshot.docs.map((doc) => ({
+        id: doc.id,
+        ...doc.data(),
+      }));
+      setTimeList(timeArray);
+    });
+  }, []);
 
   const onSignOut = () => {
     //log out 기능
@@ -73,16 +75,15 @@ const Home = () => {
         </div>
       </form>
       <div>
-        {timeList.map((document) => (
-          <div>
-            {document.hour}:{document.minute}
-          </div>
-        ))}
-      </div>
-
-      <div>
         <button onClick={onClickProfile}>Profile</button>
         <button onClick={onSignOut}>Log Out</button>
+      </div>
+      <div>
+        {timeList.map((doc) => (
+          <div key={doc.id}>
+            {doc.hour}:{doc.minute}
+          </div>
+        ))}
       </div>
     </div>
   );
