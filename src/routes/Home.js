@@ -3,15 +3,16 @@ import React, { useState, useEffect } from "react";
 import { useHistory } from "react-router-dom";
 
 const Home = ({ userData }) => {
-  const [hour, setHour] = useState("");
-  const [minute, setMinute] = useState("");
+  const [lolNickName, setLolNickName] = useState("");
+  const [startTime, setStartTime] = useState("");
+  const [endTime, setEndTime] = useState("");
   const [timeList, setTimeList] = useState([]);
 
   const onChange = (e) => {
     const { value, id } = e.target;
-    if (id === "hour") {
-      setHour(value);
-    } else if (id === "minute") setMinute(value);
+    if (id === "startTime") setStartTime(value);
+    else if (id === "endTime") setEndTime(value);
+    else if (id === "lolNickName") setLolNickName(value);
   };
 
   const onSubmit = async (e) => {
@@ -19,11 +20,13 @@ const Home = ({ userData }) => {
     await dbService.collection("lolTime").add({
       userId: userData.uid,
       userEmail: userData.email,
-      hour: hour,
-      minute: minute,
+      lolNickName: lolNickName,
+      startTime: startTime,
+      endTime: endTime,
     });
-    setHour("");
-    setMinute("");
+    setLolNickName("");
+    setStartTime("");
+    setEndTime("");
   };
 
   useEffect(() => {
@@ -50,25 +53,27 @@ const Home = ({ userData }) => {
 
   return (
     <div>
-      <div>Home</div>
       <form onSubmit={onSubmit}>
         <div>
           <input
-            id="hour"
-            type="number"
-            placeholder="Hour"
-            min="0"
-            max="23"
-            value={hour}
+            id="lolNickName"
+            type="text"
+            placeholder="소환사명"
+            value={lolNickName}
+            onChange={onChange}
+          ></input>
+        </div>
+        <div>
+          <input
+            id="startTime"
+            type="time"
+            value={startTime}
             onChange={onChange}
           ></input>
           <input
-            id="minute"
-            type="number"
-            placeholder="Minute"
-            min="0"
-            max="59"
-            value={minute}
+            id="endTime"
+            type="time"
+            value={endTime}
             onChange={onChange}
           ></input>
           <input type="submit" value=".time"></input>
@@ -81,7 +86,9 @@ const Home = ({ userData }) => {
       <div>
         {timeList.map((doc) => (
           <div key={doc.id}>
-            {doc.hour}:{doc.minute}
+            <div>
+              {doc.lolNickName} {doc.startTime} - {doc.endTime}
+            </div>
           </div>
         ))}
       </div>
