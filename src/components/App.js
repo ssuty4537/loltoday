@@ -7,7 +7,6 @@ function App() {
   const [userData, setUserData] = useState(null);
 
   useEffect(() => {
-    //AuthState의 상태를 확인하는 method
     authService.onAuthStateChanged((user) => {
       if (user) {
         setIsLoggedIn(true);

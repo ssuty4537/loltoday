@@ -1,12 +1,18 @@
 import { authService, dbService } from "firebaseApp";
-import React, { useState, useEffect } from "react";
+import React, { useState } from "react";
 import { useHistory } from "react-router-dom";
 
-const Home = ({ userData }) => {
+const TimeInput = ({ userData }) => {
   const [lolNickName, setLolNickName] = useState("");
   const [startTime, setStartTime] = useState("");
   const [endTime, setEndTime] = useState("");
-  const [timeList, setTimeList] = useState([]);
+
+  const startTimeConvert = startTime.toString().replace(/T/, " ").concat(":00");
+  const startTimeParse = Date.parse(startTimeConvert);
+  const endTimeConvert = endTime.toString().replace(/T/, " ").concat(":00");
+  const endTimeParse = Date.parse(endTimeConvert);
+  const subtractTime = (endTimeParse - startTimeParse) / 60000;
+  console.log(subtractTime, startTimeParse, endTimeParse);
 
   const onChange = (e) => {
     const { value, id } = e.target;
@@ -18,6 +24,7 @@ const Home = ({ userData }) => {
   const onSubmit = async (e) => {
     e.preventDefault();
     await dbService.collection("lolTime").add({
+      createdAt: Date.now(),
       userId: userData.uid,
       userEmail: userData.email,
       lolNickName: lolNickName,
@@ -25,20 +32,8 @@ const Home = ({ userData }) => {
       endTime: endTime,
     });
     setLolNickName("");
-    setStartTime("");
-    setEndTime("");
+    onClickMatching();
   };
-
-  useEffect(() => {
-    //foreach 구문과 다르게 onSnapshot 실시간 반영 가능
-    dbService.collection("lolTime").onSnapshot((snapshot) => {
-      const timeArray = snapshot.docs.map((doc) => ({
-        id: doc.id,
-        ...doc.data(),
-      }));
-      setTimeList(timeArray);
-    });
-  }, []);
 
   const onSignOut = () => {
     //log out 기능
@@ -46,14 +41,28 @@ const Home = ({ userData }) => {
   };
 
   const history = useHistory();
-  const onClickProfile = () => {
+  const onClickMatching = () => {
     //react-route-dom 에서 history 기능 제공
-    history.push("/profile");
+    history.push("/matching");
   };
 
   return (
     <div>
       <form onSubmit={onSubmit}>
+        <div>
+          <input
+            id="startTime"
+            type="datetime-local"
+            value={startTime}
+            onChange={onChange}
+          ></input>
+          <input
+            id="endTime"
+            type="datetime-local"
+            value={endTime}
+            onChange={onChange}
+          ></input>
+        </div>
         <div>
           <input
             id="lolNickName"
@@ -62,37 +71,13 @@ const Home = ({ userData }) => {
             value={lolNickName}
             onChange={onChange}
           ></input>
-        </div>
-        <div>
-          <input
-            id="startTime"
-            type="time"
-            value={startTime}
-            onChange={onChange}
-          ></input>
-          <input
-            id="endTime"
-            type="time"
-            value={endTime}
-            onChange={onChange}
-          ></input>
           <input type="submit" value=".time"></input>
         </div>
       </form>
       <div>
-        <button onClick={onClickProfile}>Profile</button>
         <button onClick={onSignOut}>Log Out</button>
-      </div>
-      <div>
-        {timeList.map((doc) => (
-          <div key={doc.id}>
-            <div>
-              {doc.lolNickName} {doc.startTime} - {doc.endTime}
-            </div>
-          </div>
-        ))}
       </div>
     </div>
   );
 };
-export default Home;
+export default TimeInput;
