@@ -2,17 +2,10 @@ import { authService, dbService } from "firebaseApp";
 import React, { useState } from "react";
 import { useHistory } from "react-router-dom";
 
-const TimeInput = ({ userData }) => {
+const InputTime = ({ userData }) => {
   const [lolNickName, setLolNickName] = useState("");
   const [startTime, setStartTime] = useState("");
   const [endTime, setEndTime] = useState("");
-
-  const startTimeConvert = startTime.toString().replace(/T/, " ").concat(":00");
-  const startTimeParse = Date.parse(startTimeConvert);
-  const endTimeConvert = endTime.toString().replace(/T/, " ").concat(":00");
-  const endTimeParse = Date.parse(endTimeConvert);
-  const subtractTime = (endTimeParse - startTimeParse) / 60000;
-  console.log(subtractTime, startTimeParse, endTimeParse);
 
   const onChange = (e) => {
     const { value, id } = e.target;
@@ -22,14 +15,22 @@ const TimeInput = ({ userData }) => {
   };
 
   const onSubmit = async (e) => {
+    const startTimeConvert = startTime.replace(/T/, " ").concat(":00");
+    const startTimeParse = Date.parse(startTimeConvert);
+    const endTimeConvert = endTime.replace(/T/, " ").concat(":00");
+    const endTimeParse = Date.parse(endTimeConvert);
+
     e.preventDefault();
     await dbService.collection("lolTime").add({
       createdAt: Date.now(),
+      createdDate: Date.now() - (Date.now() % (60000 * 60 * 24)),
       userId: userData.uid,
       userEmail: userData.email,
       lolNickName: lolNickName,
-      startTime: startTime,
-      endTime: endTime,
+      startTime: startTimeConvert,
+      startTimeParse: startTimeParse,
+      endTime: endTimeConvert,
+      endTimeParse: endTimeParse,
     });
     setLolNickName("");
     onClickMatching();
@@ -43,7 +44,7 @@ const TimeInput = ({ userData }) => {
   const history = useHistory();
   const onClickMatching = () => {
     //react-route-dom 에서 history 기능 제공
-    history.push("/matching");
+    history.push("/show");
   };
 
   return (
@@ -80,4 +81,4 @@ const TimeInput = ({ userData }) => {
     </div>
   );
 };
-export default TimeInput;
+export default InputTime;

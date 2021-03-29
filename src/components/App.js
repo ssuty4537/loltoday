@@ -15,7 +15,7 @@ function App() {
         setIsLoggedIn(false);
       }
     });
-  });
+  }, []);
 
   return <AppRouter isLoggedIn={isLoggedIn} userData={userData} />;
 }
