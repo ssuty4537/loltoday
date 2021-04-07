@@ -1,0 +1,20 @@
+{
+  "files": {
+    "main.css": "/loltoday/static/css/main.ac655486.chunk.css",
+    "main.js": "/loltoday/static/js/main.08504a2f.chunk.js",
+    "main.js.map": "/loltoday/static/js/main.08504a2f.chunk.js.map",
+    "runtime-main.js": "/loltoday/static/js/runtime-main.be1da59d.js",
+    "runtime-main.js.map": "/loltoday/static/js/runtime-main.be1da59d.js.map",
+    "static/js/2.bf39fc21.chunk.js": "/loltoday/static/js/2.bf39fc21.chunk.js",
+    "static/js/2.bf39fc21.chunk.js.map": "/loltoday/static/js/2.bf39fc21.chunk.js.map",
+    "index.html": "/loltoday/index.html",
+    "static/css/main.ac655486.chunk.css.map": "/loltoday/static/css/main.ac655486.chunk.css.map",
+    "static/js/2.bf39fc21.chunk.js.LICENSE.txt": "/loltoday/static/js/2.bf39fc21.chunk.js.LICENSE.txt"
+  },
+  "entrypoints": [
+    "static/js/runtime-main.be1da59d.js",
+    "static/js/2.bf39fc21.chunk.js",
+    "static/css/main.ac655486.chunk.css",
+    "static/js/main.08504a2f.chunk.js"
+  ]
+}
