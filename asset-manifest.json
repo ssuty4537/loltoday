@@ -1,8 +1,8 @@
 {
   "files": {
     "main.css": "/loltoday/static/css/main.ac655486.chunk.css",
-    "main.js": "/loltoday/static/js/main.d40bb31e.chunk.js",
-    "main.js.map": "/loltoday/static/js/main.d40bb31e.chunk.js.map",
+    "main.js": "/loltoday/static/js/main.c5b0fb9e.chunk.js",
+    "main.js.map": "/loltoday/static/js/main.c5b0fb9e.chunk.js.map",
     "runtime-main.js": "/loltoday/static/js/runtime-main.be1da59d.js",
     "runtime-main.js.map": "/loltoday/static/js/runtime-main.be1da59d.js.map",
     "static/js/2.bf39fc21.chunk.js": "/loltoday/static/js/2.bf39fc21.chunk.js",
@@ -15,6 +15,6 @@
     "static/js/runtime-main.be1da59d.js",
     "static/js/2.bf39fc21.chunk.js",
     "static/css/main.ac655486.chunk.css",
-    "static/js/main.d40bb31e.chunk.js"
+    "static/js/main.c5b0fb9e.chunk.js"
   ]
 }
