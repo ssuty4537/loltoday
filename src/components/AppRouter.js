@@ -1,5 +1,5 @@
 import React from "react";
-import { BrowserRouter as Router, Route, Switch } from "react-router-dom";
+import { BrowserRouter, Route, Switch } from "react-router-dom";
 import Auth from "routes/Auth";
 import InputTime from "routes/InputTime";
 import ShowMembers from "routes/ShowMembers";
@@ -7,10 +7,10 @@ import Profile from "routes/Profile";
 
 const AppRouter = ({ isLoggedIn, userData }) => {
   return (
-    <Router>
+    <BrowserRouter basename={process.env.PUBLIC_URL}>
       <Switch //여기 내부에 Route 와 path 정보를 넣어놓으면 된다
       >
-        <Route exact path="/show">
+        <Route exact path="/showMembers">
           <ShowMembers />
         </Route>
         <Route exact path="/profile">
@@ -28,7 +28,7 @@ const AppRouter = ({ isLoggedIn, userData }) => {
           </Route>
         )}
       </Switch>
-    </Router>
+    </BrowserRouter>
   );
 };
 export default AppRouter;

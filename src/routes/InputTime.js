@@ -44,7 +44,7 @@ const InputTime = ({ userData }) => {
   const history = useHistory();
   const onClickMatching = () => {
     //react-route-dom 에서 history 기능 제공
-    history.push("/show");
+    history.push("/showMembers");
   };
 
   return (
